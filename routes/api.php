@@ -13,6 +13,11 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 });
 
+// Admin Routers
+Route::group(['prefix' => '/admin', 'middleware' => ['auth:api', 'api.admin']], function () {
+    // Access Admin Routers
+});
+
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });

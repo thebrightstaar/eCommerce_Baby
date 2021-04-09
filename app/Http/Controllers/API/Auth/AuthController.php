@@ -16,11 +16,13 @@ class AuthController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
+            'type' => 'string'
         ]);
         if ($validator->fails()) {
             return response(['errors' => $validator->errors()->all()], 422);
         }
         $request['password'] = Hash::make($request['password']);
+        $request['type'] = $request['type'] === 'admin' ? 1  : 0;
         $user = User::create($request->toArray());
         $token = $user->createToken('eCommerce Baby Made By TG Developer')->accessToken;
         $response = ['token' => $token];
