@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\API\Auth;
 
 
-use App\Http\Controllers\API\BaseController as BaseController;
+use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Mail\Message;
@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
-class ForgotPasswordController extends BaseController
+class ForgotPasswordController extends Controller
 {
     public function forgot(Request $request)
     {
@@ -22,13 +22,13 @@ class ForgotPasswordController extends BaseController
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validate Error', $validator->errors());
+            return response()->json(['error' => 'Validate Error', 'data' => $validator->errors()], 400);
         }
 
         $email = $request->email;
 
         if (User::where('email', $email)->doesntExist()) {
-            return $this->sendError('User does not exists');
+            return response()->json(['error' => 'User does not exists'], 400);
         }
 
         $token = Str::random(6);
@@ -48,7 +48,7 @@ class ForgotPasswordController extends BaseController
                 'message' => 'Please Check Your Email'
             ]);
         } catch (\Exception $exception) {
-            return $this->sendError('error', $exception->getMessage(), 400);
+            return response()->json(['error', 'data' => $exception->getMessage()], 400);
         }
     }
 
@@ -60,25 +60,25 @@ class ForgotPasswordController extends BaseController
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validate Error', $validator->errors());
+            return response()->json(['error' => 'Validate Error', 'data' => $validator->errors()], 400);
         }
 
         $token = $request->token;
         $passwordResets = DB::table('password_resets')->where('token', $token)->first();
 
         if (!$passwordResets) {
-            return $this->sendError('Invalid Token!', [], 400);
+            return response()->json(['error' => 'Invalid Token!'], 400);
         }
 
         $user = User::where('email', $passwordResets->email)->first();
 
         if (!$user) {
-            return $this->sendError("User Does Not Exist");
+            return response()->json(['error' => 'User does not exists'], 400);
         }
 
         $user->password = Hash::make($request->password);
         $user->save();
 
-        return $this->sendResponse([], "Change Password Successfully");
+        return response()->json(['message' => "Change Password Successfully"], 200);
     }
 }
