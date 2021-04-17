@@ -24,9 +24,10 @@ class AuthController extends Controller
         $request['password'] = Hash::make($request['password']);
         $request['type'] = $request['type'] === 'admin' ? 1  : 0;
         $user = User::create($request->toArray());
-        $token = $user->createToken('eCommerce Baby Made By TG Developer')->accessToken;
-        $response = ['token' => $token];
-        return response($response, 200);
+        $user->sendEmailVerificationNotification();
+        // $token = $user->createToken('eCommerce Baby Made By TG Developer')->accessToken;
+        // $response = ['token' => $token];
+        return response()->json(['message' => 'Check your email for verification'], 200);
     }
 
     public function login(Request $request)
