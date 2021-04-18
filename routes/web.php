@@ -13,6 +13,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/verification/code', function () {
+    return view('Mails.verify');
+})->name('verification.code');
+
 Route::get('/', function () {
     return view('welcome');
 });
