@@ -42,4 +42,18 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function user_product()
+    {
+        return $this->hasMany('App\Models\User_product' ,'id_user');
+
+    }
+
+    public function department()
+    {
+        return $this->hasMany('App\Models\Department' ,'id_user');
+
+    }
+
+
 }
