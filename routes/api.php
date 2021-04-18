@@ -1,8 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\Auth\AuthController;
-use App\Http\Controllers\API\Auth\ForgotPasswordController;
-use App\Http\Controllers\API\Auth\VerificationController;
+
 use Illuminate\Support\Facades\Route;
 
 // Public Routers
