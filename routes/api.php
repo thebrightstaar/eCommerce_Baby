@@ -4,6 +4,7 @@ use App\Http\Controllers\API\Auth\AuthController;
 use App\Http\Controllers\API\Auth\ForgotPasswordController;
 use App\Http\Controllers\API\Auth\VerificationController;
 use Illuminate\Support\Facades\Route;
+use  App\Http\Controllers\API\admainController\ProductController;
 
 // Public Routers
 Route::post('/register', [AuthController::class, 'register']);
@@ -30,3 +31,9 @@ Route::middleware('auth:api')->group(function () {
     Route::get('email/resend', [VerificationController::class, 'resend'])->name('verification.resend');
     Route::post('/logout', [AuthController::class, 'logout']);
 });
+
+// routes for create product by admain & show all product & search on products by name & delete a product
+
+Route::post('createNewProduct', [ProductController::class, 'create']);
+Route::get('showProduct', [ProductController::class, 'index']);
+Route::get('search/{key}', [ProductController::class, 'search']);
