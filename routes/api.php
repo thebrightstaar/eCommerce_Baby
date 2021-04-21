@@ -32,8 +32,13 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 });
 
-// routes for create product by admain & show all product & search on products by name & delete a product
+// routes for create product by admain , show all product , search on products by name ,  delete a product
 
 Route::post('createNewProduct', [ProductController::class, 'create']);
-Route::get('showProduct', [ProductController::class, 'index']);
+Route::get('showProduct', [ProductController::class, 'showAllProduct']);
 Route::get('search/{key}', [ProductController::class, 'search']);
+Route::get('deleteProduct/product_id={id}', [ProductController::class, 'destroy']);
+Route::post('editProduct/product_id={id}', [ProductController::class, 'update']);
+Route::get('deleteProduct/product_id={id}', [ProductController::class, 'show']);
+
+

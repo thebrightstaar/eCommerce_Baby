@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 class ProductController extends BaseController
 {
     //show all product
-    public function index()
+    public function showAllProduct()
     {
         $products = Product::all();
         return $this->sendResponse(ProductResources::collection($products), 'Product retrieved Successfully!');
@@ -64,15 +64,71 @@ class ProductController extends BaseController
         $product->product_name= $request->input('product_name');
         $product->quantity= $request->input('quantity');
         $product->id_departmant= $request->input('id_departmant');
-        $product->save();
 
-        return $product;
+        $validator = Validator::make($request, [
+            'price'=>'required',
+            'discount'=>'required',
+            'description'=>'required',
+            'image_1'=>'required|image',
+            'color'=>'required',
+            'product_name'=>'required',
+            'quantity'=>'required',
+            'id_departmant'=>'required',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('Validate Error',$validator->errors());
+        }
+
+        $product->save();
+        return $this->sendResponse(new ProductResources($product), 'Product created Successfully!');
 
     }
 
     // search on a product by its name
     public function search($key)
     {
-        return Product::where('product_name', 'Like',"%$key%")->get();
+        $products=Product::where('product_name', 'Like',"%$key%")->get();
+        return $this->sendResponse(ProductResources::collection($products), 'Product retrieved Successfully!');
+
     }
+
+    // function for edit () product and it will need a id
+    public function update(Request $request, $id)
+    {
+        $validator = Validator::make($request, [
+            'price'=>'required',
+            'discount'=>'required',
+            'description'=>'required',
+            'image_1'=>'required|image',
+            'color'=>'required',
+            'product_name'=>'required',
+            'quantity'=>'required',
+            'id_departmant'=>'required',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('Validate Error',$validator->errors());
+        }
+
+        $product= new Product;
+        $product->price= $request->input('price');
+        $product->discount= $request->input('discount');
+        $product->description= $request->input('description');
+        $product->image_1=$request->file('image_1')->store('products');
+        $product->image_2=$request->file('image_2')->store('products');
+        $product->image_3=$request->file('image_3')->store('products');
+        $product->image_4=$request->file('image_4')->store('products');
+        $product->image_5=$request->file('image_5')->store('products');
+        $product->color= $request->input('color');
+        $product->product_name= $request->input('product_name');
+        $product->quantity= $request->input('quantity');
+        $product->id_departmant= $request->input('id_departmant');
+
+        $product->save();
+        return $this->sendResponse(new ProductResources($product), 'Product created Successfully!');
+
+    }
+
+
 }
