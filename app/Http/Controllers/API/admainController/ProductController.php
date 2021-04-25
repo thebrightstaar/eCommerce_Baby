@@ -56,10 +56,20 @@ class ProductController extends BaseController
         $product->discount= $request->input('discount');
         $product->description= $request->input('description');
         $product->image_1=$request->file('image_1')->store('products');
-        $product->image_2=$request->file('image_2')->store('products');
-        $product->image_3=$request->file('image_3')->store('products');
-        $product->image_4=$request->file('image_4')->store('products');
-        $product->image_5=$request->file('image_5')->store('products');
+
+        if ($product->image_2 != null) {
+            $product->image_2=$request->file('image_2')->store('products');
+        }
+        if ( $product->image_3 != null) {
+            $product->image_3=$request->file('image_3')->store('products');
+        }
+        if ($product->image_4 != null) {
+            $product->image_4=$request->file('image_4')->store('products');
+        }
+        if ($product->image_5 != null) {
+            $product->image_5=$request->file('image_5')->store('products');
+        }
+
         $product->color= $request->input('color');
         $product->product_name= $request->input('product_name');
         $product->quantity= $request->input('quantity');
@@ -116,17 +126,27 @@ class ProductController extends BaseController
         $product->discount= $request->input('discount');
         $product->description= $request->input('description');
         $product->image_1=$request->file('image_1')->store('products');
-        $product->image_2=$request->file('image_2')->store('products');
-        $product->image_3=$request->file('image_3')->store('products');
-        $product->image_4=$request->file('image_4')->store('products');
-        $product->image_5=$request->file('image_5')->store('products');
+
+        if ($product->image_2 != null) {
+            $product->image_2=$request->file('image_2')->store('products');
+        }
+        if ($product->image_3 != null) {
+            $product->image_3=$request->file('image_3')->store('products');
+        }
+        if ($product->image_4 != null) {
+            $product->image_4=$request->file('image_4')->store('products');
+        }
+        if ($product->image_5 != null) {
+            $product->image_5=$request->file('image_5')->store('products');
+        }
+
         $product->color= $request->input('color');
         $product->product_name= $request->input('product_name');
         $product->quantity= $request->input('quantity');
         $product->id_departmant= $request->input('id_departmant');
 
         $product->save();
-        return $this->sendResponse(new ProductResources($product), 'Product created Successfully!');
+        return $this->sendResponse(new ProductResources($product), 'Product updated Successfully!');
 
     }
 
