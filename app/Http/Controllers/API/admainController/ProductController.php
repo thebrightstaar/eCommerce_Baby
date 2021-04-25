@@ -57,6 +57,7 @@ class ProductController extends BaseController
         $product->description= $request->input('description');
         $product->image_1=$request->file('image_1')->store('products');
 
+        // I used (if) statment to give the admain an option to add more images or not
         if ($product->image_2 != null) {
             $product->image_2=$request->file('image_2')->store('products');
         }
@@ -106,6 +107,7 @@ class ProductController extends BaseController
     // function for edit () product and it will need a id
     public function update(Request $request, $id)
     {
+        $product=Product::find($id);
         $validator = Validator::make($request, [
             'price'=>'required',
             'discount'=>'required',
@@ -121,12 +123,12 @@ class ProductController extends BaseController
             return $this->sendError('Validate Error',$validator->errors());
         }
 
-        $product= new Product;
         $product->price= $request->input('price');
         $product->discount= $request->input('discount');
         $product->description= $request->input('description');
         $product->image_1=$request->file('image_1')->store('products');
 
+        // I used (if) statment to give the admain an option to add more images or not
         if ($product->image_2 != null) {
             $product->image_2=$request->file('image_2')->store('products');
         }
