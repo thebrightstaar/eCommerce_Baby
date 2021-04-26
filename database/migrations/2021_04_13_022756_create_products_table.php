@@ -19,10 +19,10 @@ class CreateProductsTable extends Migration
             $table->integer('discount')->nullable;
             $table->text('description');
             $table->string('image_1');
-            $table->string('image_2')->nullable;
-            $table->string('image_3')->nullable;
-            $table->string('image_4')->nullable;
-            $table->string('image_5')->nullable;
+            $table->string('image_2')->default('0');
+            $table->string('image_3')->default('0');
+            $table->string('image_4')->default('0');
+            $table->string('image_5')->default('0');
             $table->string('color');
             $table->text('product_name');
             $table->integer('quantity')->nullable;

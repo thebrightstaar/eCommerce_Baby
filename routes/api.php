@@ -40,5 +40,9 @@ Route::get('search/{key}', [ProductController::class, 'search']);
 Route::get('deleteProduct/product_id={id}', [ProductController::class, 'destroy']);
 Route::post('editProduct/product_id={id}', [ProductController::class, 'update']);
 Route::get('deleteProduct/product_id={id}', [ProductController::class, 'show']);
+Route::post('addImage_2/product_id={id}', [ProductController::class, 'addImage_2']);
+Route::post('addImage_3/product_id={id}', [ProductController::class, 'addImage_3']);
+Route::post('addImage_4/product_id={id}', [ProductController::class, 'addImage_4']);
+Route::post('addImage_5/product_id={id}', [ProductController::class, 'addImage_5']);
 
 

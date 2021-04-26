@@ -51,32 +51,8 @@ class ProductController extends BaseController
  image_4	image_5	color	product_name	quantity
  id_departmant	created_at	updated_at  */
 
-        $product= new Product;
-        $product->price= $request->input('price');
-        $product->discount= $request->input('discount');
-        $product->description= $request->input('description');
-        $product->image_1=$request->file('image_1')->store('products');
-
-        // I used (if) statment to give the admain an option to add more images or not
-        if ($product->image_2 != null) {
-            $product->image_2=$request->file('image_2')->store('products');
-        }
-        if ( $product->image_3 != null) {
-            $product->image_3=$request->file('image_3')->store('products');
-        }
-        if ($product->image_4 != null) {
-            $product->image_4=$request->file('image_4')->store('products');
-        }
-        if ($product->image_5 != null) {
-            $product->image_5=$request->file('image_5')->store('products');
-        }
-
-        $product->color= $request->input('color');
-        $product->product_name= $request->input('product_name');
-        $product->quantity= $request->input('quantity');
-        $product->id_departmant= $request->input('id_departmant');
-
-        $validator = Validator::make($request, [
+        $input=$request->all();
+        $validator = Validator::make($input, [
             'price'=>'required',
             'discount'=>'required',
             'description'=>'required',
@@ -90,10 +66,9 @@ class ProductController extends BaseController
         if ($validator->fails()) {
             return $this->sendError('Validate Error',$validator->errors());
         }
-
-        $product->save();
-        return $this->sendResponse(new ProductResources($product), 'Product created Successfully!');
-
+        $input['image_1']=$request->file('image_1')->store('products');
+        $product=Product::create($input);
+        return $this->sendResponse(new ProductResources($product), 'Product deleted Successfully!');
     }
 
     // search on a product by its name
@@ -104,11 +79,83 @@ class ProductController extends BaseController
 
     }
 
-    // function for edit () product and it will need a id
+    // adding image_2
+    public function addImage_2(Request $request, $id)
+    {
+        $product=Product::find($id);
+        $product->image_2=$request->file('image_2')->store('products');
+        $validator = Validator::make($request->all(), [
+
+            'image_2'=>'required|image',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('Validate Error',$validator->errors());
+        }
+        $product->save();
+        return $this->sendResponse(ProductResources::make($product), 'Product retrieved Successfully!');
+
+    }
+
+    // adding image_3
+    public function addImage_3(Request $request, $id)
+    {
+        $product=Product::find($id);
+        $product->image_3=$request->file('image_3')->store('products');
+        $validator = Validator::make($request->all(), [
+
+            'image_3'=>'required|image',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('Validate Error',$validator->errors());
+        }
+        $product->save();
+        return $this->sendResponse(ProductResources::make($product), 'Product retrieved Successfully!');
+
+    }
+
+    // adding image_4
+    public function addImage_4(Request $request, $id)
+    {
+        $product=Product::find($id);
+        $product->image_4=$request->file('image_4')->store('products');
+        $validator = Validator::make($request->all(), [
+
+            'image_4'=>'required|image',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('Validate Error',$validator->errors());
+        }
+        $product->save();
+        return $this->sendResponse(ProductResources::make($product), 'Product retrieved Successfully!');
+
+    }
+
+    // adding image_5
+    public function addImage_5(Request $request, $id)
+    {
+        $product=Product::find($id);
+        $product->image_5=$request->file('image_5')->store('products');
+        $validator = Validator::make($request->all(), [
+
+            'image_5'=>'required|image',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('Validate Error',$validator->errors());
+        }
+        $product->save();
+        return $this->sendResponse(ProductResources::make($product), 'Product retrieved Successfully!');
+
+    }
+
+    // function for edit () product and it will need an id
     public function update(Request $request, $id)
     {
         $product=Product::find($id);
-        $validator = Validator::make($request, [
+        $validator = Validator::make($request->all(), [
             'price'=>'required',
             'discount'=>'required',
             'description'=>'required',
@@ -127,21 +174,6 @@ class ProductController extends BaseController
         $product->discount= $request->input('discount');
         $product->description= $request->input('description');
         $product->image_1=$request->file('image_1')->store('products');
-
-        // I used (if) statment to give the admain an option to add more images or not
-        if ($product->image_2 != null) {
-            $product->image_2=$request->file('image_2')->store('products');
-        }
-        if ($product->image_3 != null) {
-            $product->image_3=$request->file('image_3')->store('products');
-        }
-        if ($product->image_4 != null) {
-            $product->image_4=$request->file('image_4')->store('products');
-        }
-        if ($product->image_5 != null) {
-            $product->image_5=$request->file('image_5')->store('products');
-        }
-
         $product->color= $request->input('color');
         $product->product_name= $request->input('product_name');
         $product->quantity= $request->input('quantity');
