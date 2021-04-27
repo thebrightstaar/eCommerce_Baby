@@ -34,6 +34,6 @@ Route::middleware('auth:api')->group(function () {
 
 // routes for create product by admain & show all product & search on products by name & delete a product
 
-Route::post('createNewProduct', [ProductController::class, 'create']);
-Route::get('showProduct', [ProductController::class, 'index']);
-Route::get('search/{key}', [ProductController::class, 'search']);
+Route::get('/products', [ProductController::class, 'index']);
+Route::post('/products/store', [ProductController::class, 'store']);
+Route::get('/search/{key}', [ProductController::class, 'search']);
