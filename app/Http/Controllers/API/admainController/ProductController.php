@@ -8,6 +8,8 @@ use App\Models\Product;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\Product as ProductResources;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Str;
 
 class ProductController extends BaseController
 {
@@ -48,14 +50,15 @@ class ProductController extends BaseController
     public function store(Request $request)
     {
         $this->validate($request, [
-            'images' => 'required|image|array|max:5',
+            'images' => 'required|array|max:5',
+            'images.*' => 'image'
         ]);
 
         $images = array();
 
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $img) {
-                $name = time() . $img->getClientOriginalName();
+                $name = Str::of(time() . $img->getClientOriginalName())->replace(' ', '');
                 $img->move(public_path() . '/upload/products/', $name);
                 $images[] = $name;
             }
@@ -78,6 +81,12 @@ class ProductController extends BaseController
     // search on a product by its name
     public function search($key)
     {
-        return Product::where('product_name', 'Like', "%$key%")->get();
+        return Product::where('title', 'Like', "%$key%")->get();
+    }
+
+    public function image($fileName)
+    {
+        $path = public_path() . '/upload/products/' . $fileName;
+        return Response::file($path);
     }
 }
