@@ -21,7 +21,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'name',
         'email',
         'password',
-        'type'
+        'type',
+        'activated'
     ];
 
     /**
@@ -45,15 +46,11 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function user_product()
     {
-        return $this->hasMany('App\Models\User_product' ,'id_user');
-
+        return $this->hasMany('App\Models\User_product', 'id_user');
     }
 
     public function department()
     {
-        return $this->hasMany('App\Models\Department' ,'id_user');
-
+        return $this->hasMany('App\Models\Department', 'id_user');
     }
-
-
 }

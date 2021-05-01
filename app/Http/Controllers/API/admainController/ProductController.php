@@ -1,19 +1,22 @@
 <?php
 
 namespace App\Http\Controllers\API\admainController;
+
 use App\Http\Controllers\API\admainController\BaseController as BaseController;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\Product as ProductResources;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Str;
 
 class ProductController extends BaseController
 {
     //show all product
     public function showAllProduct()
     {
-        $products = Product::all();
+        $products = Product::latest()->get();
         return $this->sendResponse(ProductResources::collection($products), 'Product retrieved Successfully!');
     }
 
@@ -33,19 +36,18 @@ class ProductController extends BaseController
     //delete one product
     public function destroy($id)
     {
-        $product=Product::find($id);
+        $product = Product::find($id);
         if (is_null($product)) {
             return $this->sendError('Product not found!');
         }
         $product->delete();
         return $this->sendResponse(new ProductResources($product), 'Product deleted Successfully!');
-
     }
 
 
 
     //create a product by admain
-    public function create(Request $request)
+    public function store(Request $request)
     {
  /* id	price	discount	description		image_2	image_3
  image_4	image_5	color	product_name	quantity
@@ -183,6 +185,4 @@ class ProductController extends BaseController
         return $this->sendResponse(new ProductResources($product), 'Product updated Successfully!');
 
     }
-
-
 }
