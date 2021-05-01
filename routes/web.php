@@ -10,7 +10,7 @@ Route::get('/', function () {
 Auth::routes();
 
 // Admin Routers
-Route::group(['prefix' => '/admin', 'middleware' => ['auth:api', 'api.admin']], function () {
+Route::group(['prefix' => '/admin', 'middleware' => 'api.admin'], function () {
     // Access Admin Routers
     //
 });
