@@ -18,7 +18,6 @@ class CreateProductsTable extends Migration
             $table->double('price');
             $table->integer('discount')->nullable();
             $table->text('description');
-            $table->string('image');
             $table->string('color');
             $table->text('title');
             $table->integer('quantity')->nullable();

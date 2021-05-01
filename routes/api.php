@@ -38,9 +38,16 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 });
 
-// routes for create product by admain & show all product & search on products by name & delete a product
+// routes for create product by admain , show all product , search on products by name ,  delete a product
+Route::post('createNewProduct', [ProductController::class, 'create']);
+Route::get('showProduct', [ProductController::class, 'showAllProduct']);
+Route::get('search/{key}', [ProductController::class, 'search']);
+Route::get('deleteProduct/product_id={id}', [ProductController::class, 'destroy']);
+Route::post('editProduct/product_id={id}', [ProductController::class, 'update']);
+Route::get('deleteProduct/product_id={id}', [ProductController::class, 'show']);
+Route::post('addImage_2/product_id={id}', [ProductController::class, 'addImage_2']);
+Route::post('addImage_3/product_id={id}', [ProductController::class, 'addImage_3']);
+Route::post('addImage_4/product_id={id}', [ProductController::class, 'addImage_4']);
+Route::post('addImage_5/product_id={id}', [ProductController::class, 'addImage_5']);
 
-Route::get('/products', [ProductController::class, 'index']);
-Route::post('/products/store', [ProductController::class, 'store']);
-Route::get('/search/{key}', [ProductController::class, 'search']);
-Route::get('/products/image/{filename}', [ProductController::class, 'image']);
+
