@@ -5,8 +5,8 @@ use App\Http\Controllers\API\Auth\ForgotPasswordController;
 use Illuminate\Support\Facades\Route;
 use  App\Http\Controllers\API\admainController\ProductController;
 use App\Http\Controllers\API\Auth\ActivationService;
-
-
+use App\Http\Controllers\API\OrderController;
+use App\Http\Controllers\PaidController;
 
 // Public Routers
 Route::post('/register', [AuthController::class, 'register']);
@@ -21,6 +21,14 @@ Route::middleware('verify.account')->group(function () {
     // User Routers
     Route::middleware('auth:api')->group(function () {
         // Access User Routers
+        // Order Routers
+        Route::get('/orders', [OrderController::class, 'index']);
+        Route::post('/orders/store/', [OrderController::class, 'store']);
+        Route::put('/orders/update', [OrderController::class, 'update']);
+        Route::delete('/orders/destroy/{id}', [OrderController::class, 'destroy']);
+
+        Route::post('/paids/store', [PaidController::class, 'store']);
+
         Route::post('/logout', [AuthController::class, 'logout']);
     });
 });
