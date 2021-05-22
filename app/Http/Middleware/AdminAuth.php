@@ -20,8 +20,7 @@ class AdminAuth
         if (Auth::guard('web')->check() && $request->user()->type == 1) {
             return $next($request);
         } else {
-            $message = ["message" => "Permission Denied"];
-            return response($message, 401);
+            return redirect('/home')->with('status','You are not allowed to admin dashboard');
         }
     }
 }
