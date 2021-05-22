@@ -53,4 +53,14 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Models\Department', 'id_user');
     }
+
+    /**
+     * Get all of the comments for the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
 }
