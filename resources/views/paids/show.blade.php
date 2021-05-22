@@ -48,9 +48,11 @@
                     </tr>
                 </tbody>
             </table>
+            @if ($paid->status === 'waiting')
             <a href="{{route('paids.accept', ['id' => $paid->id])}}" class="btn btn-success font-weight-bold">Accept Orders</a>
             <a href="{{route('paids.decline', ['id' => $paid->id])}}" class="btn btn-danger font-weight-bold">Reject Orders</a>
-            </div>
+            @endif
+        </div>
 
         </div>
     </div>

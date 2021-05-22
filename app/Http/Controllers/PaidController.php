@@ -26,6 +26,26 @@ class PaidController extends Controller
         return view('paids.index')->with('paids', $paids);
     }
 
+    public function showAccept()
+    {
+        $paids = Paid::where('status', 'accept')->latest()->paginate(5);
+        $deliverPaids = Paid::where('status', 'delivered')->latest()->paginate(5);
+
+        return view('paids.accept', compact('paids', 'deliverPaids'));
+    }
+
+    public function confirmDeliver($id)
+    {
+        $paid = Paid::find($id);
+        if (!$paid) {
+            return redirect()->route('paids.deliver')->with('message', 'This Paid Is Not Found');
+        }
+
+        $paid->status = 'delivered';
+        $paid->save();
+        return redirect()->route('paids.deliver')->with('message', 'These Orders Delivered');
+    }
+
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [

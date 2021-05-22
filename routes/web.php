@@ -25,6 +25,9 @@ Route::group(['prefix' => '/admin', 'middleware' => 'api.admin'], function () {
     Route::get('/paids/accept/{id}', [PaidController::class, 'accept'])->name('paids.accept');
     Route::get('/paids/decline/{id}', [PaidController::class, 'decline'])->name('paids.decline');
 
+    Route::get('/paids/deliver/show', [PaidController::class, 'showAccept'])->name('paids.deliver');
+    Route::get('/paids/deliver/confirm/{id}', [PaidController::class, 'confirmDeliver'])->name('paids.deliver.confirm');
+
     // Discounts
     Route::get('/discounts', [DiscountController::class, 'index'])->name('discounts.index');
     Route::post('/discounts/store', [DiscountController::class, 'store'])->name('discounts.store');
