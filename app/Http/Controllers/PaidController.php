@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Paid;
+use App\Models\Payment;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
@@ -52,16 +53,17 @@ class PaidController extends Controller
         return view('paids.decline', compact('paids'));
     }
 
-    public function reserve(Request $request)
+    public function showReserve()
     {
-        //
+        $user = Auth::user();
+        $reserve = $user->paid->where('status', 'reserve')->latest()->get();
+
+        return response()->json(['success' => true, 'message' => 'Retrived Reserve Successfully', 'data' => $reserve], 200);
     }
 
-    public function store(Request $request)
+    public function storeReserve(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'image' => 'required|image',
-            'address' => 'required|string',
             'coupon' => 'string'
         ]);
 
@@ -72,6 +74,11 @@ class PaidController extends Controller
         $user = Auth::user();
         $orders = $user->orders()->where('status', 'added')->latest()->get();
 
+        if ($user->paid) {
+            if (count($user->paid->where('status', 'reserve')->get()) >= 1) {
+                return response()->json(['success' => false, 'message' => 'You Already Have Reserve'], 400);
+            }
+        }
         if ($orders->isEmpty()) {
             return response()->json(['success' => false, 'message' => 'You Do Not Have Orders'], 400);
         }
@@ -113,7 +120,7 @@ class PaidController extends Controller
             // Sum Price
             $sumPrice += $order->price;
             $arrOrders[] = $order->id;
-            $order->status = 'waiting';
+            $order->status = 'reserve';
             $order->save();
         }
 
@@ -122,22 +129,85 @@ class PaidController extends Controller
             $sumPrice = (100 - $coupon->value) * $sumPrice / 100;
         }
 
+        $paid = Paid::create([
+            'user_id' => $user->id,
+            'discount_id' => $coupon ? $coupon->id : NULL,
+            'price' => $sumPrice,
+            'status' => 'reserve',
+            'orders' => json_encode($arrOrders),
+        ]);
+
+        return response()->json(['success' => true, 'message' => 'Just 24 Hours We Wait You for Completing Payment', 'data' => [
+            'reserve_id' => $paid->id,
+            'price' => $sumPrice
+        ]], 200);
+    }
+
+    public function confirmReserve(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'reserve_id' => 'required|integer',
+            'payment_id' => 'required|integer',
+            'image' => 'required|image',
+            'address' => 'required|string',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['success' => false, 'message' => 'Validate Error', 'error' => $validator->errors()], 400);
+        }
+
+        $paid = Paid::find($request->reserve_id);
+        $user = Auth::user();
+        $orders = json_decode($paid->orders);
+
+        if (!$paid) {
+            return response()->json(['success' => false, 'message' => 'You Do Not Have Reserve'], 400);
+        } else if ($user->id !== $paid->user_id) {
+            return response()->json(['success' => false, 'message' => 'You Do Not Have Rights'], 400);
+        }
+
+        if (!Payment::find($request->payment_id)) {
+            return response()->json(['success' => false, 'message' => 'This Way Is Not Offer For Payment'], 400);
+        }
+
+        if (!$orders) {
+            return response()->json(['success' => false, 'message' => 'You Do Not Have Orders'], 400);
+        }
+
+        // Orders from Reseve to Waiting
+        $arrOrders = array();
+        foreach ($orders as $order) {
+            $or = Order::find($order);
+            $or->status = 'waiting';
+            $or->save();
+        }
+
         // Set Image Paid
         $image = $request->image;
         $name =  Str::of(time() . $image->getClientOriginalName())->replace(' ', '');
         $image->move(public_path() . '/upload/paid/', $name);
 
-        $paid = Paid::create([
-            'user_id' => $user->id,
-            'discount_id' => $coupon ? $coupon->id : NULL,
-            'image' => 'upload/paid/' . $name,
-            'address' => $request->address,
-            'price' => $sumPrice,
-            'status' => 'waiting',
-            'orders' => json_encode($arrOrders),
-        ]);
+        $paid->image = 'upload/paid/' . $name;
+        $paid->payment_id = $request->payment_id;
+        $paid->address = $request->address;
+        $paid->status = 'waiting';
+        $paid->save();
+
 
         return response()->json(['success' => true, 'message' => 'Wait for Validate Orders'], 200);
+    }
+
+    public function destoryReserve($id)
+    {
+        $paid = Paid::find($id);
+        if (!$paid) {
+            return response()->json(['success' => false, 'message' => 'This Reserve Is Not Found'], 400);
+        } else if (Auth::id() !== $paid->user_id || $paid->status !== 'reserve') {
+            return response()->json(['success' => false, 'message' => 'You Can Not Delete This'], 400);
+        }
+
+        $paid->delete();
+        return response()->json(['success' => true, 'message' => 'Reserve Deleted Successfully'], 200);
     }
 
     public function show($id)

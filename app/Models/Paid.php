@@ -11,6 +11,8 @@ class Paid extends Model
 
     protected $fillable = ['user_id', 'image', 'address', 'discount_id', 'price', 'status', 'orders'];
 
+    protected $hidden = ['user_id'];
+
     /**
      * The roles that belong to the Paid
      *

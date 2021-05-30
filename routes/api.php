@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use  App\Http\Controllers\API\admainController\ProductController;
 use App\Http\Controllers\API\Auth\ActivationService;
 use App\Http\Controllers\API\OrderController;
+use App\Http\Controllers\DiscountController;
 use App\Http\Controllers\PaidController;
 
 // Public Routers
@@ -35,13 +36,19 @@ Route::middleware('verify.account')->group(function () {
         Route::delete('/orders/destroy/{id}', [OrderController::class, 'destroy']);
 
         // Paid
-        Route::post('/paids/store', [PaidController::class, 'store']);
+        Route::get('/paids/reserve/show', [PaidController::class, 'showReserve']);
+        Route::post('/paids/reserve/create', [PaidController::class, 'storeReserve']);
+        Route::post('/paids/reserve/confirm', [PaidController::class, 'confirmReserve']);
+        Route::get('/paids/reserve/delete/{id}', [PaidController::class, 'destoryReserve']);
+
 
         // Logout
         Route::post('/logout', [AuthController::class, 'logout']);
     });
 });
 
+// Discount
+Route::get('/discount/{coupon}', [DiscountController::class, 'showAPI']);
 
 // routes for create product by admain , show all product , search on products by name ,  delete a product
 Route::post('createNewProduct', [ProductController::class, 'create']);

@@ -65,4 +65,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Order::class);
     }
+
+    /**
+     * Get the paid associated with the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function paid()
+    {
+        return $this->hasOne(Paid::class);
+    }
 }

@@ -9,12 +9,38 @@ use Illuminate\Http\Request;
 
 class DiscountController extends Controller
 {
+    public function showAPI($coupon)
+    {
+        $discount = Discount::where('code', $coupon)->first();
+        if ($discount) {
+            if ($discount->status === 'disable') {
+                return response()->json(['success' => false, 'message' => 'This discount is Disabled'], 400);
+            } else if (!$discount->amount > 0) {
+                $discount->status = 'disable';
+                $discount->save();
+                return response()->json(['success' => false, 'message' => 'This discount is Completed'], 400);
+            } else if ($discount->started_at > Carbon::now()) {
+                return response()->json(['success' => false, 'message' => 'This discount is not Started Yet'], 400);
+            } else if ($discount->expired_at < Carbon::now()) {
+                $discount->status = 'disable';
+                $discount->save();
+                return response()->json(['success' => false, 'message' => 'This discount is Died'], 400);
+            } else {
+                return response()->json(['success' => true, 'data' => [
+                    'code' => $discount->code,
+                    'value' => $discount->value
+                ]], 400);
+            }
+        } else {
+            return response()->json(['success' => false, 'message' => 'This Coupon is not Found'], 400);
+        }
+    }
+
     public function index()
     {
         $discounts = Discount::latest()->paginate(10);
         return view('discounts.index')->with('discounts', $discounts);
     }
-
 
     public function store(Request $request)
     {
