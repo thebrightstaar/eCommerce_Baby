@@ -57,6 +57,9 @@ class PaidController extends Controller
     {
         $user = Auth::user();
         $reserve = $user->paid->where('status', 'reserve')->latest()->get();
+        if (!$reserve) {
+            return response()->json(['success' => false, 'message' => 'There Are Not Resesrve'], 400);
+        }
 
         return response()->json(['success' => true, 'message' => 'Retrived Reserve Successfully', 'data' => $reserve], 200);
     }
