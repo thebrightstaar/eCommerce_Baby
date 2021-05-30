@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.master')
 @php
     $i = 1;
     $j = 1;
@@ -30,7 +30,7 @@
                     <td>{{$paid->address}}</td>
                     <td>{{count(json_decode($paid->orders))}}</td>
                     <td>{{$paid->price}}</td>
-                    <td>{{$paid->status}}</td>
+                    <td class="text-primary font-weight-bold">{{$paid->status}}ed</td>
                     <td>
                         <a href="{{route('paids.show', $paid->id)}}" class="btn btn-success"><i class="fas fa-eye fa-lg"></i></a>
                         <a href="{{route('paids.deliver.confirm', $paid->id)}}" class="btn btn-primary"><i class="fas fa-car fa-lg"></i></a>
@@ -43,7 +43,7 @@
             {!! $paids->links() !!}
         </div>
         @else
-        <div class="alert alert-danger" role="alert">
+        <div class="alert alert-danger col" role="alert">
             Sorry you do not have orders for delivering
         </div>
         @endif
@@ -73,7 +73,7 @@
                     <td>{{$paid->address}}</td>
                     <td>{{count(json_decode($paid->orders))}}</td>
                     <td>{{$paid->price}}</td>
-                    <td>{{$paid->status}}</td>
+                    <td class="text-success font-weight-bold">{{$paid->status}}</td>
                     <td>
                         <a href="{{route('paids.show', $paid->id)}}" class="btn btn-success"><i class="fas fa-eye fa-lg"></i></a>
                     </td>

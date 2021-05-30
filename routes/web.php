@@ -6,6 +6,7 @@ use App\Http\Controllers\PaymentController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers;
+use App\Http\Controllers\AboutController;
 use App\Http\Controllers\Admin\DashboardController;
 
 Route::get('/', function () {
@@ -20,6 +21,7 @@ Route::group(['prefix' => '/admin', 'middleware' => 'admin'], function () {
     Route::get('/payments', [PaymentController::class, 'index'])->name('payments.index');
     Route::get('/payments/create', [PaymentController::class, 'create'])->name('payments.create');
     Route::post('/payments/store', [PaymentController::class, 'store'])->name('payments.store');
+    Route::get('/payments/destroy/{id}', [PaymentController::class, 'destroy'])->name('payments.destroy');
 
     // Paids
     Route::get('/paids', [PaidController::class, 'index'])->name('paids.index');
@@ -29,6 +31,7 @@ Route::group(['prefix' => '/admin', 'middleware' => 'admin'], function () {
 
     Route::get('/paids/deliver/show', [PaidController::class, 'showAccept'])->name('paids.deliver');
     Route::get('/paids/deliver/confirm/{id}', [PaidController::class, 'confirmDeliver'])->name('paids.deliver.confirm');
+    Route::get('/paids/deliver/decline', [PaidController::class, 'showDecline'])->name('paids.decline');
 
     // Discounts
     Route::get('/discounts', [DiscountController::class, 'index'])->name('discounts.index');
@@ -37,6 +40,13 @@ Route::group(['prefix' => '/admin', 'middleware' => 'admin'], function () {
     Route::get('/discounts/edit/{id}', [DiscountController::class, 'edit'])->name('discounts.edit');
     Route::post('/discounts/update/{id}', [DiscountController::class, 'update'])->name('discounts.update');
     Route::get('/discounts/destroy/{id}', [DiscountController::class, 'destroy'])->name('discounts.destroy');
+
+    // About Us
+    Route::get('/about', [AboutController::class, 'index'])->name('about.index');
+    Route::post('/about/store', [AboutController::class, 'store'])->name('about.store');
+    Route::get('/about/edit/{id}', [AboutController::class, 'edit'])->name('about.edit');
+    Route::post('/about/update/{id}', [AboutController::class, 'update'])->name('about.update');
+    Route::get('/about/destroy/{id}', [AboutController::class, 'destroy'])->name('about.destroy');
 });
 
 

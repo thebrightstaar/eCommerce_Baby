@@ -18,6 +18,7 @@ class CreatePaymentsTable extends Migration
             $table->string('title');
             $table->string('logo');
             $table->string('address');
+            $table->string('name')->nullable();
             $table->integer('number');
             $table->timestamps();
         });

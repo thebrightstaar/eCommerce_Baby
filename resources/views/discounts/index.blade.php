@@ -1,4 +1,4 @@
-@extends('layouts.app');
+@extends('layouts.master')
 @php
     $i = 1;
 @endphp
@@ -14,7 +14,7 @@
         @endif
     </div>
     <div class="row">
-        <form class="col border py-3 border-success rounded bg-light" action="{{route('discounts.store')}}" method="post">
+        <form class="col border py-3 mb-2 border-success rounded bg-light" action="{{route('discounts.store')}}" method="post">
             @csrf
             <div class="form-row">
                 <div class="form-group col-md-5">
@@ -36,7 +36,7 @@
                     @enderror
                 </div>
                 <div class="form-group col-md-2 pt-4">
-                    <button type="submit" class="btn btn-success w-100 mt-2">Create Coupon</button>
+                    <button type="submit" class="btn btn-success rounded w-100 mt-2">Create Coupon</button>
                 </div>
             </div>
             <div class="form-row">
@@ -107,7 +107,7 @@
                     <td>{{$dis->amount}}</td>
                     <td>{{$dis->status}}</td>
                     <td>
-                        <a href="#" class="text-success pr-2"><i class="fas fa-eye fa-lg"></i></a>
+                        <a href="{{route('discounts.show', $dis->id)}}" class="text-success pr-2"><i class="fas fa-eye fa-lg"></i></a>
                         <a href="{{route('discounts.edit', $dis->id)}}" class="text-primary pr-2"><i class="fas fa-edit fa-lg"></i></a>
                         <a href="{{route('discounts.destroy', $dis->id)}}" class="text-danger"><i class="fas fa-trash-alt fa-lg"></i></a>
                     </td>
@@ -119,13 +119,12 @@
             {!! $discounts->links() !!}
         </div>
         @else
-            <div class="alert alert-danger col" role="alert">
+            <div class="alert alert-danger col rounded" role="alert">
                 Sorry for bothering you do not have coupons!!
             </div>
         @endif
     </div>
 </div>
-
 
 <script>
     const start_date = flatpickr('#start_date');

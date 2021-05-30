@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AboutController;
 use App\Http\Controllers\API\Auth\AuthController;
 use App\Http\Controllers\API\Auth\ForgotPasswordController;
 use Illuminate\Support\Facades\Route;
@@ -9,26 +10,34 @@ use App\Http\Controllers\API\OrderController;
 use App\Http\Controllers\PaidController;
 
 // Public Routers
+// Login && Register
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login'])->name('login');
+// Forgot Password
 Route::post('password/forgot', [ForgotPasswordController::class, 'forgot']);
 Route::post('password/reset', [ForgotPasswordController::class, 'reset']);
+// Active User Account
 Route::get('user/activation/{token}', [ActivationService::class, 'activateUser'])->name('user.activate');
+// About Us
+Route::get('/about', [AboutController::class, 'indexApi']);
 
 
 // Routers With Verified
 Route::middleware('verify.account')->group(function () {
     // User Routers
     Route::middleware('auth:api')->group(function () {
-        // Access User Routers
+        // Change User Information
+        Route::post('/user/update', [AuthController::class, 'update']);
         // Order Routers
         Route::get('/orders', [OrderController::class, 'index']);
         Route::post('/orders/store/', [OrderController::class, 'store']);
         Route::put('/orders/update', [OrderController::class, 'update']);
         Route::delete('/orders/destroy/{id}', [OrderController::class, 'destroy']);
 
+        // Paid
         Route::post('/paids/store', [PaidController::class, 'store']);
 
+        // Logout
         Route::post('/logout', [AuthController::class, 'logout']);
     });
 });

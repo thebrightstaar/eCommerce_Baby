@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Paid;
-use App\Models\Product;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
@@ -44,6 +43,18 @@ class PaidController extends Controller
         $paid->status = 'delivered';
         $paid->save();
         return redirect()->route('paids.deliver')->with('message', 'These Orders Delivered');
+    }
+
+    public function showDecline()
+    {
+        $paids = Paid::where('status', 'decline')->latest()->paginate(10);
+
+        return view('paids.decline', compact('paids'));
+    }
+
+    public function reserve(Request $request)
+    {
+        //
     }
 
     public function store(Request $request)
