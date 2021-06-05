@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers;
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\ContactController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -47,6 +48,11 @@ Route::group(['prefix' => '/admin', 'middleware' => 'admin'], function () {
     Route::get('/about/edit/{id}', [AboutController::class, 'edit'])->name('about.edit');
     Route::post('/about/update/{id}', [AboutController::class, 'update'])->name('about.update');
     Route::get('/about/destroy/{id}', [AboutController::class, 'destroy'])->name('about.destroy');
+
+    // Contact
+    Route::get('/user/contact', [ContactController::class, 'index'])->name('contact.index');
+    Route::get('/user/contact/{id}', [ContactController::class, 'open'])->name('contact.open');
+    Route::post('/user/contact/send/{id}', [ContactController::class, 'send'])->name('contact.send');
 });
 
 
