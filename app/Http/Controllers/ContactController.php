@@ -19,7 +19,7 @@ class ContactController extends Controller
     {
         $user = User::find($id);
         if (!$user) {
-            return redirect()->route('contact.index')->with('message', 'This User Is Not Found');
+            return redirect()->route('contact.index')->with('message', __('auth.failed'));
         }
 
         return view('contacts.send', compact('user'));
@@ -29,7 +29,7 @@ class ContactController extends Controller
     {
         $user = User::find($id);
         if (!$user) {
-            return redirect()->route('contact.index')->with('message', 'This User Is Not Found');
+            return redirect()->route('contact.index')->with('message', __('auth.failed'));
         }
 
         $this->validate($request, [
@@ -48,10 +48,9 @@ class ContactController extends Controller
                 $message->subject($subject);
             });
 
-            return redirect()->route('contact.index')->with('message', 'Message Send Successfully');
+            return redirect()->route('contact.index')->with('message', __('contact.msgSuccess'));
         } catch (\Exception $exception) {
-            dd($exception->getMessage());
-            return redirect()->route('contact.index')->with('message', 'Message Not Send. There are Wrong');
+            return redirect()->route('contact.index')->with('message', __('contact.msgFailed'));
         }
     }
 }

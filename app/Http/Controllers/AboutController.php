@@ -33,18 +33,18 @@ class AboutController extends Controller
 
         About::create($request->toArray());
 
-        return redirect()->route('about.index')->with('message', 'About Us Created Successfully!');
+        return redirect()->route('about.index')->with('message', __('contact.aboutCreate'));
     }
 
     public function edit($id)
     {
         $about = About::find($id);
         if (!$about) {
-            return redirect()->route('about.index')->with('message', 'About Us Is Not Found');
+            return redirect()->route('about.index')->with('message', __('contact.aboutNoFound'));
         }
 
         if (!Auth::id() === $about->user_id) {
-            return redirect()->route('about.index')->with('message', 'You Do Not Have Rights To Access');
+            return redirect()->route('about.index')->with('message', __('contact.aboutNotAccess'));
         }
 
         return view('abouts.edit', compact("about"));
@@ -54,7 +54,7 @@ class AboutController extends Controller
     {
         $about = About::find($id);
         if (!$about) {
-            return redirect()->route('about.index')->with('message', 'About Us Is Not Found');
+            return redirect()->route('about.index')->with('message', __('contact.aboutNotFound'));
         }
 
         $this->validate($request, [
@@ -74,18 +74,18 @@ class AboutController extends Controller
         $about->whatsapp = $request->whatsapp;
         $about->save();
 
-        return redirect()->route('about.index')->with('message', 'About Us Updated Successfully');
+        return redirect()->route('about.index')->with('message', __('contact.aboutUpdate'));
     }
 
     public function destroy($id)
     {
         $about = About::find($id);
         if (!$about) {
-            return redirect()->route('about.index')->with('message', 'About Us Is Not Found');
+            return redirect()->route('about.index')->with('message', __('contact.aboutNotFound'));
         }
 
         $about->delete();
 
-        return redirect()->route('about.index')->with('message', 'About Us Deleted Successfully');
+        return redirect()->route('about.index')->with('message', __('contact.aboutDelete'));
     }
 }

@@ -22,13 +22,13 @@ class ForgotPasswordController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['error' => 'Validate Error', 'data' => $validator->errors()], 400);
+            return response()->json(['error' => __('auth.validateError'), 'data' => $validator->errors()], 400);
         }
 
         $email = $request->email;
 
         if (User::where('email', $email)->doesntExist()) {
-            return response()->json(['error' => 'User does not exists'], 400);
+            return response()->json(['error' => __('auth.failed')], 400);
         }
 
         $token = Str::random(6);
@@ -41,11 +41,11 @@ class ForgotPasswordController extends Controller
 
             Mail::send('Mails.forgot', ['token' => $token], function (Message $message)  use ($email) {
                 $message->to($email);
-                $message->subject('Reset Your Password');
+                $message->subject(__('auth.reset'));
             });
 
             return response([
-                'message' => 'Please Check Your Email'
+                'message' => __('auth.checkEmail')
             ]);
         } catch (\Exception $exception) {
             return response()->json(['error', 'data' => $exception->getMessage()], 400);
@@ -60,25 +60,25 @@ class ForgotPasswordController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['error' => 'Validate Error', 'data' => $validator->errors()], 400);
+            return response()->json(['error' => __('auth.validateError'), 'data' => $validator->errors()], 400);
         }
 
         $token = $request->token;
         $passwordResets = DB::table('password_resets')->where('token', $token)->first();
 
         if (!$passwordResets) {
-            return response()->json(['error' => 'Invalid Token!'], 400);
+            return response()->json(['error' => __('auth.invalid')], 400);
         }
 
         $user = User::where('email', $passwordResets->email)->first();
 
         if (!$user) {
-            return response()->json(['error' => 'User does not exists'], 400);
+            return response()->json(['error' => __('auth.failed')], 400);
         }
 
         $user->password = Hash::make($request->password);
         $user->save();
 
-        return response()->json(['message' => "Change Password Successfully"], 200);
+        return response()->json(['message' => __('auth.change')], 200);
     }
 }

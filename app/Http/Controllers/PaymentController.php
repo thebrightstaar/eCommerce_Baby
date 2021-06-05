@@ -45,7 +45,7 @@ class PaymentController extends Controller
             'number' => $request->number,
         ]);
 
-        return redirect()->route('payments.index')->with('status', 'Method Payment Created Successfully');
+        return redirect()->route('payments.index')->with('status', __('pay.payCreate'));
     }
 
 
@@ -53,7 +53,7 @@ class PaymentController extends Controller
     {
         $payment = Payment::find($id);
         if (!$payment) {
-            return redirect()->route('payments.index')->with('status', 'Do Not Found Payment');
+            return redirect()->route('payments.index')->with('status', __('pay.payEmpty'));
         }
 
         return view('payments.show', compact($payment, 'payment'));
@@ -64,10 +64,10 @@ class PaymentController extends Controller
     {
         $payment = Payment::find($id);
         if (!$payment) {
-            return redirect()->route('payments.index')->with('status', 'Do Not Found Payment');
+            return redirect()->route('payments.index')->with('status', __('pay.payEmpty'));
         }
 
         $payment->delete();
-        return redirect()->route('payments.index')->with('status', 'Payment Deleted Successfully');
+        return redirect()->route('payments.index')->with('status', __('pay.payDelete'));
     }
 }

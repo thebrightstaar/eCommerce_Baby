@@ -36,7 +36,7 @@ class AuthController extends Controller
         $request['type'] = 0;
         $user = User::create($request->toArray());
         $this->activationService->sendActivationMail($user);
-        return response()->json(['message' => 'Check your email for verification'], 200);
+        return response()->json(['message' => __('auth.register')], 200);
     }
 
     public function login(Request $request)
@@ -56,18 +56,18 @@ class AuthController extends Controller
                     auth()->logout();
                     return response([
                         'error' => 'warning',
-                        'message' => 'You need to confirm your account. We have sent you an activation code, please check your email.'
+                        'message' => __('auth.emailUnverify')
                     ], 404);
                 }
                 $token = $user->createToken('eCommerce Baby Made By TG Developer')->accessToken;
                 $response = ['success' => true, 'token' => $token];
                 return response($response, 200);
             } else {
-                $response = ["message" => "Password mismatch"];
+                $response = ["message" => __('auth.password')];
                 return response($response, 422);
             }
         } else {
-            $response = ["message" => 'User does not exist'];
+            $response = ["message" => __('auth.failed')];
             return response($response, 422);
         }
     }
@@ -76,7 +76,7 @@ class AuthController extends Controller
     {
         $token = $request->user()->token();
         $token->revoke();
-        $response = ['message' => 'You have been successfully logged out!'];
+        $response = ['message' => __('auth.logout')];
         return response($response, 200);
     }
 
@@ -97,6 +97,6 @@ class AuthController extends Controller
         $user->address = $request->address;
         $user->save();
 
-        return response()->json(['success' => true, 'message' => 'Update Profile Successfully!']);
+        return response()->json(['success' => true, 'message' => __('auth.updateProfile')]);
     }
 }

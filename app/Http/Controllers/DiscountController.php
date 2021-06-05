@@ -14,17 +14,17 @@ class DiscountController extends Controller
         $discount = Discount::where('code', $coupon)->first();
         if ($discount) {
             if ($discount->status === 'disable') {
-                return response()->json(['success' => false, 'message' => 'This discount is Disabled'], 400);
+                return response()->json(['success' => false, 'message' => __('pay.couponDisabled')], 400);
             } else if (!$discount->amount > 0) {
                 $discount->status = 'disable';
                 $discount->save();
-                return response()->json(['success' => false, 'message' => 'This discount is Completed'], 400);
+                return response()->json(['success' => false, 'message' => __('pay.couponCompleted')], 400);
             } else if ($discount->started_at > Carbon::now()) {
-                return response()->json(['success' => false, 'message' => 'This discount is not Started Yet'], 400);
+                return response()->json(['success' => false, 'message' => __('pay.couponNotStarted')], 400);
             } else if ($discount->expired_at < Carbon::now()) {
                 $discount->status = 'disable';
                 $discount->save();
-                return response()->json(['success' => false, 'message' => 'This discount is Died'], 400);
+                return response()->json(['success' => false, 'message' => __('pay.couponDied')], 400);
             } else {
                 return response()->json(['success' => true, 'data' => [
                     'code' => $discount->code,
@@ -32,7 +32,7 @@ class DiscountController extends Controller
                 ]], 400);
             }
         } else {
-            return response()->json(['success' => false, 'message' => 'This Coupon is not Found'], 400);
+            return response()->json(['success' => false, 'message' => __('pay.couponNotFound')], 400);
         }
     }
 
@@ -80,14 +80,14 @@ class DiscountController extends Controller
             'expired_at' => $endTime,
         ]);
 
-        return redirect()->route('discounts.index')->with('message', 'Coupon Created Successfully');
+        return redirect()->route('discounts.index')->with('message', __('pay.couponCreate'));
     }
 
     public function show($id)
     {
         $discount = Discount::find($id);
         if (!$discount) {
-            return redirect()->route('discounts.index')->with('message', 'Coupon Not Found');
+            return redirect()->route('discounts.index')->with('message', __('pay.couponNotFound'));
         }
 
         $paids = Paid::where('discount_id', $discount->id)->latest()->paginate(10);
@@ -99,7 +99,7 @@ class DiscountController extends Controller
     {
         $discount = Discount::find($id);
         if (!$discount) {
-            return redirect()->route('discounts.index')->with('message', 'Coupon Not Found');
+            return redirect()->route('discounts.index')->with('message', __('pay.couponNotFound'));
         }
         return view('discounts.edit')->with('discount', $discount);
     }
@@ -108,7 +108,7 @@ class DiscountController extends Controller
     {
         $discount = Discount::find($id);
         if (!$discount) {
-            return redirect()->route('discounts.index')->with('message', 'Coupon Not Found');
+            return redirect()->route('discounts.index')->with('message', __('pay.couponNotFound'));
         }
         $this->validate($request, [
             'name' => 'required|string',
@@ -145,17 +145,17 @@ class DiscountController extends Controller
         $discount->status = updateStatusCoupon($startTime, $endTime);
         $discount->save();
 
-        return redirect()->route('discounts.index')->with('message', 'Update Coupon Successfully');
+        return redirect()->route('discounts.index')->with('message', __('pay.couponUpdate'));
     }
 
     public function destroy($id)
     {
         $discount = Discount::find($id);
         if (!$discount) {
-            return redirect()->route('discounts.index')->with('message', 'Coupon Not Found');
+            return redirect()->route('discounts.index')->with('message', __('pay.couponNotFound'));
         }
         $discount->delete();
 
-        return redirect()->route('discounts.index')->with('message', 'Deleted Coupon Successfully');
+        return redirect()->route('discounts.index')->with('message', __('pay.couponDelete'));
     }
 }

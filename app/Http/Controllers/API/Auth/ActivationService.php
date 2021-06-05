@@ -61,7 +61,7 @@ class ActivationService extends Controller
 
         $this->activationRepo->deleteActivation($token);
 
-        return response(['success' => true, 'message' => 'verification successfuly'], 200);
+        return response(['success' => true, 'message' => __('auth.veriSucc')], 200);
     }
 
     private function shouldSend($user)
