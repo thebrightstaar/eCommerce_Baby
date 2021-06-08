@@ -6,6 +6,8 @@ return [
     'aboutCreate' => 'About Us Created Successfully!',
     'aboutNotFound' => 'About Us Is Not Found',
     'aboutNotAccess' => 'You Do Not Have Rights To Access',
+    'aboutUpdate' => 'About Us Updated Successfully!',
+    'aboutDelete' => 'About Us Deleted Successfully!',
 
 
 ];

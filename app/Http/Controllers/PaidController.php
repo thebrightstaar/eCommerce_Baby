@@ -204,7 +204,7 @@ class PaidController extends Controller
     {
         $paid = Paid::find($id);
         if (!$paid) {
-            return response()->json(['success' => false, 'message' => ], 400);
+            return response()->json(['success' => false, 'message' =>  __('pay.apiReserve')], 400);
         } else if (Auth::id() !== $paid->user_id || $paid->status !== 'reserve') {
             return response()->json(['success' => false, 'message' => __('pay.paidPermision')], 400);
         }
