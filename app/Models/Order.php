@@ -11,6 +11,8 @@ class Order extends Model
 
     protected $fillable = ['user_id', 'product_id', 'quantity', 'status', 'price'];
 
+    protected $hidden = ['user_id'];
+
     /**
      * The roles that belong to the Order
      *
