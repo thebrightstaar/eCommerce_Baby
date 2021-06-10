@@ -7,11 +7,6 @@ use App\Http\Controllers\PaidController;
 use App\Http\Controllers\PaymentController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-<<<<<<< HEAD
-=======
-use App\Http\Controllers;
-use App\Http\Controllers\AboutController;
->>>>>>> 08f95eb9e994a8b1a3196aacad8a4535a104d47a
 use App\Http\Controllers\Admin\DashboardController;
 use Illuminate\Support\Facades\App;
 
