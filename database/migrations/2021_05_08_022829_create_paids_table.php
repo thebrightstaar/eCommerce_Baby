@@ -16,9 +16,10 @@ class CreatePaidsTable extends Migration
         Schema::create('paids', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id');
+            $table->integer('payment_id')->nullable();
             $table->integer('discount_id')->nullable();
-            $table->string('image');
-            $table->string('address');
+            $table->string('image')->nullable();
+            $table->string('address')->nullable();
             $table->decimal('price');
             $table->string('status');
             $table->string('orders');

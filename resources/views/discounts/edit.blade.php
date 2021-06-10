@@ -1,8 +1,9 @@
-@extends('layouts.app');
+@extends('layouts.master')
 
 @section('content')
 <div class="container">
     <div class="row">
+        <div class="col">
         <form class="col border py-3 border-success rounded bg-light" action="{{route('discounts.update', $discount->id)}}" method="post">
             @csrf
             <div class="form-row">
@@ -67,8 +68,12 @@
                 </div>
             </div>
         </form>
+        </div>
     </div>
 </div>
+@endsection
+
+@section('scripts')
 <script>
     const start_date = flatpickr('#start_date');
     const end_date = flatpickr('#end_date');

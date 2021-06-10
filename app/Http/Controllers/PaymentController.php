@@ -28,8 +28,10 @@ class PaymentController extends Controller
             'title' => 'required',
             'logo' => 'required|image',
             'address' => 'required',
+            'name' => 'string',
             'number' => 'required|integer'
         ]);
+
 
         $image = $request->logo;
         $name =  Str::of(time() . $image->getClientOriginalName())->replace(' ', '');
@@ -39,6 +41,7 @@ class PaymentController extends Controller
             'title' => $request->title,
             'logo' => 'upload/payments/' . $name,
             'address' => $request->address,
+            'name' => $request->name,
             'number' => $request->number,
         ]);
 
@@ -54,18 +57,6 @@ class PaymentController extends Controller
         }
 
         return view('payments.show', compact($payment, 'payment'));
-    }
-
-
-    public function edit($id)
-    {
-        //
-    }
-
-
-    public function update(Request $request, $id)
-    {
-        //
     }
 
 

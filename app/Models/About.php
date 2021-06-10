@@ -5,9 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Payment extends Model
+class About extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'logo', 'address', 'name', 'number'];
+    protected $fillable = ['description', 'facebook', 'instagram', 'address', 'email', 'whatsapp'];
 }
