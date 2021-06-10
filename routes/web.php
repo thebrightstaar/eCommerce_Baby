@@ -1,20 +1,30 @@
 <?php
 
+use App\Http\Controllers;
 use App\Http\Controllers\DiscountController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PaidController;
 use App\Http\Controllers\PaymentController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers;
-use App\Http\Controllers\AboutController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\ContactController;
+
+Auth::routes();
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Auth::routes();
+//dashboard
+Route::get('/dashboard', function () {
+    return view('layouts.main');
+});
+
+
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 // Admin Routers
 Route::group(['prefix' => '/admin', 'middleware' => 'admin'], function () {
@@ -56,13 +66,15 @@ Route::group(['prefix' => '/admin', 'middleware' => 'admin'], function () {
 });
 
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::group(['prefix' => '/admin', 'middleware' => 'admin'], function () {
 
-
-Route::get('/dashboard', function () {
-    return view('Admin.dashboard');
+    // Users
+    Route::get('/registered_users', [App\Http\Controllers\Admin\DashboardController::class,  'registered_users'])->name('registered_users');
+    Route::get('/edit_users/{id}', [App\Http\Controllers\Admin\DashboardController::class,  'edit_users'])->name('edit_users');
 });
 
 
-Route::get('/registered_users', [App\Http\Controllers\Admin\DashboardController::class,  'registered_users'])->name('registered_users');
-Route::get('/edit_users/{id}', [App\Http\Controllers\Admin\DashboardController::class,  'edit_users'])->name('edit_users');
+Route::get('/add_product/store', [ProductController::class, 'create'])->name('product.store');
+
+
+Route::get('/edit_product/edit/{id}', [ProductController::class, 'edit'])->name('product.edit');
