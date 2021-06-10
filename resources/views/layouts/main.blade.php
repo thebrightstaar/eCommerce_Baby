@@ -206,11 +206,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   <p>Add product</p>
                 </a>
               </li>
-              <li class="nav-item">
-                {{-- <a href="{{route('product.edit')}}"  class="nav-link"> --}}
+              <li class="nav-item">               
                 <a href="{{ url('/edit_product/edit/{id}') }}"  class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
                   <p>Edit product</p>
+                </a>
+              </li> 
+               <li class="nav-item">               
+               <a href="{{ url('/products/show/{id}') }}"  class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                  <p>Products</p>
                 </a>
               </li>
             </ul>
