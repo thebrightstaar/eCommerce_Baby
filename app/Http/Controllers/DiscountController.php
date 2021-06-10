@@ -6,6 +6,8 @@ use App\Models\Discount;
 use App\Models\Paid;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller as Controller;
+
 
 class DiscountController extends Controller
 {
