@@ -11,6 +11,8 @@ class Paid extends Model
 
     protected $fillable = ['user_id', 'image', 'address', 'discount_id', 'price', 'status', 'orders'];
 
+    protected $hidden = ['user_id'];
+
     /**
      * The roles that belong to the Paid
      *
@@ -19,5 +21,15 @@ class Paid extends Model
     public function discount()
     {
         return $this->belongsTo(Discount::class);
+    }
+
+    /**
+     * Get the user that owns the Paid
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

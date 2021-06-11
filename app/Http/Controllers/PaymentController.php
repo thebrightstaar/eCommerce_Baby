@@ -28,8 +28,10 @@ class PaymentController extends Controller
             'title' => 'required',
             'logo' => 'required|image',
             'address' => 'required',
+            'name' => 'string',
             'number' => 'required|integer'
         ]);
+
 
         $image = $request->logo;
         $name =  Str::of(time() . $image->getClientOriginalName())->replace(' ', '');
@@ -39,10 +41,11 @@ class PaymentController extends Controller
             'title' => $request->title,
             'logo' => 'upload/payments/' . $name,
             'address' => $request->address,
+            'name' => $request->name,
             'number' => $request->number,
         ]);
 
-        return redirect()->route('payments.index')->with('status', 'Method Payment Created Successfully');
+        return redirect()->route('payments.index')->with('status', __('pay.payCreate'));
     }
 
 
@@ -50,22 +53,10 @@ class PaymentController extends Controller
     {
         $payment = Payment::find($id);
         if (!$payment) {
-            return redirect()->route('payments.index')->with('status', 'Do Not Found Payment');
+            return redirect()->route('payments.index')->with('status', __('pay.payEmpty'));
         }
 
         return view('payments.show', compact($payment, 'payment'));
-    }
-
-
-    public function edit($id)
-    {
-        //
-    }
-
-
-    public function update(Request $request, $id)
-    {
-        //
     }
 
 
@@ -73,10 +64,10 @@ class PaymentController extends Controller
     {
         $payment = Payment::find($id);
         if (!$payment) {
-            return redirect()->route('payments.index')->with('status', 'Do Not Found Payment');
+            return redirect()->route('payments.index')->with('status', __('pay.payEmpty'));
         }
 
         $payment->delete();
-        return redirect()->route('payments.index')->with('status', 'Payment Deleted Successfully');
+        return redirect()->route('payments.index')->with('status', __('pay.payDelete'));
     }
 }
