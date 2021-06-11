@@ -59,8 +59,9 @@ Route::group(['prefix' => '/admin', 'middleware' => 'admin'], function () {
 
 
 Route::get('/add_product/store', [ProductController::class, 'create'])->name('product.store');
-
-
 Route::get('/edit_product/edit/{id}', [ProductController::class, 'edit'])->name('product.edit');
+Route::get('/products/show/{id}', [DiscountController::class, 'show'])->name('products.show');
 
+Auth::routes();
 
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
