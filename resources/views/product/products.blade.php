@@ -200,11 +200,16 @@
                   <p>Add product</p>
                 </a>
               </li>
-              <li class="nav-item">
-                {{-- <a href="{{route('product.edit')}}"  class="nav-link"> --}}
-                <a href="{{ url('product.edit') }}"  class="nav-link">
+              <li class="nav-item">              
+                 <a href="{{ url('/edit_product/edit/{id}') }}"   class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
                   <p>Edit product</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url('/products/show/{id}') }}"  class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                  <p> Products</p>
                 </a>
               </li>
             </ul>
@@ -222,7 +227,7 @@
                 <a href="#" class="nav-link active" >
                 
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Add Category</p>
+                  <p>Categories</p>
                 </a>
               </li>
               <li class="nav-item">
@@ -280,7 +285,7 @@
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item"><a href="{{url('/dashboard')}}">Home</a></li>
               <li class="breadcrumb-item active">Projects</li>
             </ol>
           </div>
@@ -294,7 +299,7 @@
       <!-- Default box -->
       <div class="card">
         <div class="card-header">
-          <h3 class="card-title">Projects</h3>
+          <h3 class="card-title">ALLProjects</h3>
 
           <div class="card-tools">
             <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">

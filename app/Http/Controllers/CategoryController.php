@@ -16,7 +16,10 @@ class CategoryController extends Controller
     public function index()
     {
 
+        $categories = Category::all();
+        return view('categories.index')->with(compact(['categories']));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -25,7 +28,8 @@ class CategoryController extends Controller
      */
     public function create()
     {
-
+        $categories = Category::all();
+        return view('categories.create')->with(compact(['categories']));
     }
 
     /**
@@ -36,21 +40,16 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
+        $category = new Category;
+        $category->name = $request->name;
 
-            'name' => 'required|string',
-            'slug' =>  'required|string'
-        ]);
+        if ($category->save() ) {
+            return redirect()->route('categories.index')->with(['success' => 'Category added successfully.']);
+        }
+
+        return redirect()->back()->with(['fail' => 'Unable to add category.']);
 
 
-       Category::create([
-
-        'name' => 'required|string',
-        'slug' =>  'required|string'
-
-       ]);
-
-       return redirect()->route('category.store')->with('message', 'Category Created Successfully');
     }
 
     /**
@@ -72,7 +71,8 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        //
+        $categories = Category::find($id);
+        return view('categories.edit')->with(compact(['categories', 'categories']));
     }
 
     /**
@@ -84,8 +84,15 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->name = $request->name;
+
+        if ($request->save() ) {
+            return redirect()->route('categories.index')->with(['success' => 'Category successfully updated.']);
+        }
+
+        return redirect()->back()->with(['fail' => 'Unable to update category.']);
     }
+
 
     /**
      * Remove the specified resource from storage.
@@ -93,8 +100,16 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        //
-    }
+    // public function destroy($id)
+    // {
+
+    //     if ($id->delete()) {
+    //         return redirect()->back()->with(['success' => 'Category successfully deleted.']);
+    //     }
+
+    //     return redirect()->back()->with(['fail' => 'Unable to delete category.']);
+    // }
+
 }
+
+

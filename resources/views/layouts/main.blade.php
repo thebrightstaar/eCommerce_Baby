@@ -294,7 +294,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <p>New Orders</p>
               </div>
               <div class="icon ">
-                 <i class=" fal fa-shopping-bag"></i>
+                 <i class=" "></i>
               </div>
               <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
